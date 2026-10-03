@@ -1,6 +1,9 @@
-import temp
+import os
 import uvicorn
 
-if __name__=="__main__":
-    uvicorn.run("temp:app",port=8080,reload=True)
-   
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    host = os.environ.get("HOST", "0.0.0.0")
+    # Disable reload in production on Render to save memory
+    is_prod = bool(os.environ.get("RENDER"))
+    uvicorn.run("temp:app", host=host, port=port, reload=not is_prod)
